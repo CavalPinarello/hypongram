@@ -1,0 +1,25 @@
+{
+  "name": "hypongram",
+  "version": "1.0.0",
+  "description": "Interactive sleep staging hypnogram visualization tool",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "sleep",
+    "hypnogram",
+    "visualization",
+    "polysomnography",
+    "sleep-medicine",
+    "sleep-stages",
+    "circadian-rhythm"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CavalPinarello/hypongram.git"
+  }
+}
