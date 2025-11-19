@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypongram - Sleep Staging Visualization Tool</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/hypnogram.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hypongram</h1>
+            <p class="subtitle">Evidence-Based Sleep Architecture Visualization</p>
+        </header>
+
+        <main>
+            <div class="content-wrapper">
+                <!-- Control Panel -->
+                <aside class="control-panel">
+                    <h2>Controls</h2>
+
+                    <section class="control-section">
+                        <h3>Demographics</h3>
+
+                        <div class="control-group">
+                            <label for="age">
+                                Age: <span id="age-value">30</span> years
+                            </label>
+                            <input type="range" id="age" min="0" max="100" value="30" step="1">
+                            <div class="age-indicators">
+                                <span>Infant</span>
+                                <span>Child</span>
+                                <span>Adult</span>
+                                <span>Elderly</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sex">Biological Sex</label>
+                            <select id="sex">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="duration">
+                                Sleep Duration: <span id="duration-value">Auto</span>
+                            </label>
+                            <input type="range" id="duration" min="0" max="12" value="0" step="0.5">
+                            <small>0 = age-appropriate recommended duration</small>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sleep-onset">Sleep Onset Time</label>
+                            <input type="time" id="sleep-onset" value="22:00">
+                        </div>
+                    </section>
+
+                    <section class="control-section">
+                        <h3>Life Stage Modifiers</h3>
+
+                        <div class="control-group">
+                            <label for="pregnancy">Pregnancy (Female)</label>
+                            <select id="pregnancy">
+                                <option value="none">None</option>
+                                <option value="first">First Trimester</option>
+                                <option value="second">Second Trimester</option>
+                                <option value="third">Third Trimester</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group checkbox">
+                            <input type="checkbox" id="menopause">
+                            <label for="menopause">Menopause (Female)</label>
+                        </div>
+                    </section>
+
+                    <section class="control-section">
+                        <h3>Bed Partner Effects</h3>
+
+                        <div class="control-group">
+                            <label for="partner-snoring">Partner Snoring</label>
+                            <select id="partner-snoring">
+                                <option value="none">None</option>
+                                <option value="mild">Mild</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="severe">Severe</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="partner-movement">Partner Movement</label>
+                            <select id="partner-movement">
+                                <option value="none">None</option>
+                                <option value="low">Low</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </section>
+
+                    <section class="control-section">
+                        <h3>Sleep Disorders & Substances</h3>
+
+                        <div class="control-group">
+                            <label for="sdb-severity">Sleep Disordered Breathing</label>
+                            <select id="sdb-severity">
+                                <option value="none">None</option>
+                                <option value="mild">Mild (AHI 5-15)</option>
+                                <option value="moderate">Moderate (AHI 15-30)</option>
+                                <option value="severe">Severe (AHI >30)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="alcohol">Alcohol Before Bed</label>
+                            <select id="alcohol">
+                                <option value="none">None</option>
+                                <option value="light">Light (1-2 drinks)</option>
+                                <option value="moderate">Moderate (3-4 drinks)</option>
+                                <option value="heavy">Heavy (5+ drinks)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="jet-lag">
+                                Jet Lag: <span id="jet-lag-value">0</span> hours
+                            </label>
+                            <input type="range" id="jet-lag" min="-12" max="12" value="0" step="1">
+                            <small>Negative = westward, Positive = eastward</small>
+                        </div>
+                    </section>
+
+                    <section class="control-section">
+                        <h3>Visual Settings</h3>
+
+                        <div class="control-group checkbox">
+                            <input type="checkbox" id="circadian" checked>
+                            <label for="circadian">Show Circadian Rhythm</label>
+                        </div>
+
+                        <div class="control-group checkbox">
+                            <input type="checkbox" id="show-event-labels" checked>
+                            <label for="show-event-labels">Show Event Labels</label>
+                        </div>
+
+                        <div class="control-group checkbox">
+                            <input type="checkbox" id="show-grid" checked>
+                            <label for="show-grid">Show Grid</label>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="color-scheme">Color Scheme</label>
+                            <select id="color-scheme">
+                                <option value="traditional">Traditional</option>
+                                <option value="high-contrast">High Contrast</option>
+                                <option value="colorblind">Colorblind Friendly</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="time-scale">Time Scale</label>
+                            <select id="time-scale">
+                                <option value="30">30 minutes</option>
+                                <option value="60" selected>1 hour</option>
+                                <option value="120">2 hours</option>
+                            </select>
+                        </div>
+                    </section>
+
+                    <section class="control-section">
+                        <button id="reset-btn" class="btn-secondary">Reset to Defaults</button>
+                        <button id="export-btn" class="btn-primary">Export Image</button>
+                    </section>
+                </aside>
+
+                <!-- Visualization Area -->
+                <div class="visualization-area">
+                    <div class="hypnogram-container">
+                        <canvas id="hypnogram-canvas"></canvas>
+                    </div>
+
+                    <!-- Event Legend -->
+                    <div class="event-legend">
+                        <h3>Event Markers</h3>
+                        <div class="legend-items">
+                            <div class="legend-item"><span class="legend-line" style="background:#FFB74D"></span> Urination</div>
+                            <div class="legend-item"><span class="legend-line" style="background:#EF5350"></span> Partner Snoring</div>
+                            <div class="legend-item"><span class="legend-line" style="background:#FF7043"></span> Partner Movement</div>
+                            <div class="legend-item"><span class="legend-line" style="background:#F44336"></span> Apnea/Snoring</div>
+                            <div class="legend-item"><span class="legend-line" style="background:#FF6B9D"></span> Hot Flash</div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Panel -->
+                    <div class="statistics-panel">
+                        <h2>Sleep Statistics</h2>
+
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Total Sleep Time</span>
+                                <span class="stat-value" id="stat-tst">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Sleep Efficiency</span>
+                                <span class="stat-value" id="stat-efficiency">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Sleep Latency</span>
+                                <span class="stat-value" id="stat-latency">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">REM Latency</span>
+                                <span class="stat-value" id="stat-rem-latency">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Awakenings</span>
+                                <span class="stat-value" id="stat-awakenings">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">WASO</span>
+                                <span class="stat-value" id="stat-waso">--</span>
+                            </div>
+                        </div>
+
+                        <h3>Sleep Stage Distribution</h3>
+                        <div class="stage-distribution">
+                            <div class="stage-bar-container">
+                                <div class="stage-bar" id="bar-wake"></div>
+                                <div class="stage-bar" id="bar-rem"></div>
+                                <div class="stage-bar" id="bar-n1"></div>
+                                <div class="stage-bar" id="bar-n2"></div>
+                                <div class="stage-bar" id="bar-n3"></div>
+                            </div>
+                            <div class="stage-percentages">
+                                <div class="stage-pct">
+                                    <span class="stage-color" style="background: #FF6B6B;"></span>
+                                    <span class="stage-name">Wake</span>
+                                    <span class="stage-value" id="pct-wake">--%</span>
+                                </div>
+                                <div class="stage-pct">
+                                    <span class="stage-color" style="background: #4ECDC4;"></span>
+                                    <span class="stage-name">REM</span>
+                                    <span class="stage-value" id="pct-rem">--%</span>
+                                </div>
+                                <div class="stage-pct">
+                                    <span class="stage-color" style="background: #95E1D3;"></span>
+                                    <span class="stage-name">N1</span>
+                                    <span class="stage-value" id="pct-n1">--%</span>
+                                </div>
+                                <div class="stage-pct">
+                                    <span class="stage-color" style="background: #45B7D1;"></span>
+                                    <span class="stage-name">N2</span>
+                                    <span class="stage-value" id="pct-n2">--%</span>
+                                </div>
+                                <div class="stage-pct">
+                                    <span class="stage-color" style="background: #1A535C;"></span>
+                                    <span class="stage-name">N3 (Deep)</span>
+                                    <span class="stage-value" id="pct-n3">--%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p><strong>Evidence-Based Visualization</strong> - Based on NSF, AASM guidelines, and published sleep research</p>
+            <p>Educational tool only. Not for clinical diagnosis.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="data/sleepPatterns.js"></script>
+    <script src="js/sleepArchitecture.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/sleepGenerator.js"></script>
+    <script src="js/statistics.js"></script>
+    <script src="js/lineHypnogram.js"></script>
+    <script src="js/controls-v2.js"></script>
+    <script src="js/main-v2.js"></script>
+</body>
+</html>

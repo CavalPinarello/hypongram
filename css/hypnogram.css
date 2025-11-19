@@ -74,14 +74,25 @@
     --color-circadian: rgba(204, 121, 167, 0.2);
 }
 
-/* Legend */
-.hypnogram-legend {
+/* Event Legend */
+.event-legend {
+    background: var(--surface);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.event-legend h3 {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.legend-items {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border);
 }
 
 .legend-item {
@@ -89,6 +100,23 @@
     align-items: center;
     gap: 8px;
     font-size: 0.9em;
+}
+
+.legend-line {
+    width: 30px;
+    height: 3px;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+/* Hypnogram Legend (stage colors) */
+.hypnogram-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
 }
 
 .legend-color {
