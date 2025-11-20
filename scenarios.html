@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypongram - Sleep Scenarios Comparison</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/hypnogram.css">
+    <style>
+        .scenario-selector {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .scenario-btn {
+            padding: 20px;
+            background: var(--background);
+            border: 3px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .scenario-btn:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .scenario-btn.active {
+            border-color: var(--secondary-color);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .scenario-btn h3 {
+            margin: 0 0 8px 0;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        .scenario-btn p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .comparison-note {
+            background: #FFF3CD;
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .comparison-note h4 {
+            margin: 0 0 8px 0;
+            color: #856404;
+        }
+
+        .comparison-note p {
+            margin: 0;
+            color: #856404;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            padding: 10px 20px;
+            background: var(--surface);
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--primary-color);
+            border: 2px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            border-color: var(--secondary-color);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .nav-links a.active {
+            border-color: var(--secondary-color);
+            background: rgba(52, 152, 219, 0.2);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌙 Hypongram</h1>
+            <p class="subtitle">Evidence-Based Sleep Architecture Comparison</p>
+        </header>
+
+        <div class="nav-links">
+            <a href="scenarios.html" class="active">Scenario Comparison</a>
+            <a href="index-v2.html">Custom Parameters</a>
+            <a href="index.html">Original Version (V1)</a>
+        </div>
+
+        <main>
+            <!-- Scenario Selector -->
+            <div class="scenario-selector">
+                <h2>Select a Sleep Scenario to Visualize</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 10px;">
+                    Click any scenario below to see dramatic differences in sleep architecture.
+                </p>
+
+                <div class="comparison-note">
+                    <h4>💡 Key Visual Differences to Observe:</h4>
+                    <p>
+                        <strong>🟦 Deep Sleep (N3) - Dark Blue Zones:</strong> Toddlers show MASSIVE dark blue blocks early in sleep. Young adults have moderate blocks. Elderly have almost NONE.<br><br>
+
+                        <strong>🌊 Fragmentation - Jagged vs Smooth Lines:</strong> Healthy sleep (toddler, young adult) flows smoothly downward. Severe apnea, pregnancy 3rd trimester, and elderly show constant "sawblade" up-down patterns.<br><br>
+
+                        <strong>🍷 Alcohol Biphasic Effect:</strong> Compare "young adult baseline" with "heavy alcohol" - notice deep sleep (N3) EARLY but chaotic Wake/REM mix LATE (after 3-4 hours).<br><br>
+
+                        <strong>✈️ Jet Lag:</strong> Much SHORTER total duration, difficulty falling asleep (early Wake spikes), less REM overall.<br><br>
+
+                        <strong>🤰 Pregnancy:</strong> Constant interruptions throughout - the line barely stays down for long periods.
+                    </p>
+                </div>
+
+                <div class="scenario-buttons" id="scenario-buttons">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Visualization -->
+            <div class="hypnogram-container">
+                <h2 id="current-scenario-title">Select a scenario above</h2>
+                <p id="current-scenario-desc" style="color: var(--text-secondary); margin-bottom: 20px;"></p>
+                <canvas id="hypnogram-canvas"></canvas>
+            </div>
+
+            <!-- Statistics Panel -->
+            <div class="statistics-panel">
+                <h2>Sleep Statistics</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Sleep Time</span>
+                        <span class="stat-value" id="stat-tst">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Sleep Efficiency</span>
+                        <span class="stat-value" id="stat-efficiency">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Awakenings</span>
+                        <span class="stat-value" id="stat-awakenings">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Duration</span>
+                        <span class="stat-value" id="stat-duration">--</span>
+                    </div>
+                </div>
+
+                <h3>Sleep Stage Distribution</h3>
+                <div class="stage-distribution">
+                    <div class="stage-bar-container">
+                        <div class="stage-bar" id="bar-wake"></div>
+                        <div class="stage-bar" id="bar-rem"></div>
+                        <div class="stage-bar" id="bar-n1"></div>
+                        <div class="stage-bar" id="bar-n2"></div>
+                        <div class="stage-bar" id="bar-n3"></div>
+                    </div>
+                    <div class="stage-percentages">
+                        <div class="stage-pct">
+                            <span class="stage-color" style="background: #FF6B6B;"></span>
+                            <span class="stage-name">Wake</span>
+                            <span class="stage-value" id="pct-wake">--%</span>
+                        </div>
+                        <div class="stage-pct">
+                            <span class="stage-color" style="background: #4ECDC4;"></span>
+                            <span class="stage-name">REM</span>
+                            <span class="stage-value" id="pct-rem">--%</span>
+                        </div>
+                        <div class="stage-pct">
+                            <span class="stage-color" style="background: #95E1D3;"></span>
+                            <span class="stage-name">N1</span>
+                            <span class="stage-value" id="pct-n1">--%</span>
+                        </div>
+                        <div class="stage-pct">
+                            <span class="stage-color" style="background: #45B7D1;"></span>
+                            <span class="stage-name">N2</span>
+                            <span class="stage-value" id="pct-n2">--%</span>
+                        </div>
+                        <div class="stage-pct">
+                            <span class="stage-color" style="background: #1A535C;"></span>
+                            <span class="stage-name">N3 (Deep)</span>
+                            <span class="stage-value" id="pct-n3">--%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-note" style="margin-top: 20px;">
+                    <h4>📊 Percentage Guide:</h4>
+                    <p id="percentage-guide">Select a scenario to see typical percentages.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p><strong>Evidence-Based Scenarios</strong> - Realistic patterns from published sleep research</p>
+            <p>Educational tool only. Not for clinical diagnosis.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/lineHypnogram.js"></script>
+    <script type="module">
+        import { hypnogramMockData } from './data/scenarios.js';
+
+        let renderer = new LineHypnogramRenderer('hypnogram-canvas');
+        let currentScenario = null;
+
+        // Populate scenario buttons
+        const buttonsContainer = document.getElementById('scenario-buttons');
+        hypnogramMockData.scenarios.forEach(scenario => {
+            const btn = document.createElement('div');
+            btn.className = 'scenario-btn';
+            btn.innerHTML = `
+                <h3>${scenario.label}</h3>
+                <p>${scenario.description}</p>
+            `;
+            btn.addEventListener('click', () => loadScenario(scenario, btn));
+            buttonsContainer.appendChild(btn);
+        });
+
+        // Convert scenario format to renderer format
+        function convertScenarioToEpochs(scenario) {
+            const epochs = [];
+            scenario.epochs.forEach(epoch => {
+                epochs.push({
+                    time: epoch.minute,
+                    stage: epoch.stage,
+                    duration: scenario.epochLengthMinutes,
+                    arousal: false
+                });
+            });
+
+            return {
+                epochs,
+                events: [],
+                totalMinutes: scenario.totalMinutes,
+                config: { sleepOnset: '22:00' }
+            };
+        }
+
+        // Load scenario
+        function loadScenario(scenario, buttonElement) {
+            currentScenario = scenario;
+
+            // Update active button
+            document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+            buttonElement.classList.add('active');
+
+            // Update title
+            document.getElementById('current-scenario-title').textContent = scenario.label;
+            document.getElementById('current-scenario-desc').textContent = scenario.description;
+
+            // Convert and render
+            const data = convertScenarioToEpochs(scenario);
+            renderer.setData(data);
+            renderer.render();
+
+            // Calculate and display statistics
+            updateStatistics(scenario);
+        }
+
+        // Calculate statistics
+        function updateStatistics(scenario) {
+            const epochs = scenario.epochs;
+            const stats = {
+                wake: 0, rem: 0, n1: 0, n2: 0, n3: 0
+            };
+
+            let awakenings = 0;
+            let prevStage = null;
+
+            epochs.forEach(epoch => {
+                const stage = epoch.stage.toLowerCase();
+                if (stats.hasOwnProperty(stage)) {
+                    stats[stage] += scenario.epochLengthMinutes;
+                }
+
+                if (prevStage && prevStage !== 'W' && epoch.stage === 'W') {
+                    awakenings++;
+                }
+                prevStage = epoch.stage;
+            });
+
+            const total = scenario.totalMinutes;
+            const tst = total - stats.wake;
+
+            document.getElementById('stat-tst').textContent = `${Math.floor(tst / 60)}h ${tst % 60}m`;
+            document.getElementById('stat-efficiency').textContent = `${Math.round((tst / total) * 100)}%`;
+            document.getElementById('stat-awakenings').textContent = awakenings;
+            document.getElementById('stat-duration').textContent = `${Math.floor(total / 60)}h ${total % 60}m`;
+
+            // Percentages
+            const wakePct = Math.round((stats.wake / total) * 100);
+            const remPct = Math.round((stats.rem / total) * 100);
+            const n1Pct = Math.round((stats.n1 / total) * 100);
+            const n2Pct = Math.round((stats.n2 / total) * 100);
+            const n3Pct = Math.round((stats.n3 / total) * 100);
+
+            document.getElementById('pct-wake').textContent = `${wakePct}%`;
+            document.getElementById('pct-rem').textContent = `${remPct}%`;
+            document.getElementById('pct-n1').textContent = `${n1Pct}%`;
+            document.getElementById('pct-n2').textContent = `${n2Pct}%`;
+            document.getElementById('pct-n3').textContent = `${n3Pct}%`;
+
+            // Bars
+            document.getElementById('bar-wake').style.width = `${wakePct}%`;
+            document.getElementById('bar-rem').style.width = `${remPct}%`;
+            document.getElementById('bar-n1').style.width = `${n1Pct}%`;
+            document.getElementById('bar-n2').style.width = `${n2Pct}%`;
+            document.getElementById('bar-n3').style.width = `${n3Pct}%`;
+
+            // Bar colors
+            document.getElementById('bar-wake').style.background = '#FF6B6B';
+            document.getElementById('bar-rem').style.background = '#4ECDC4';
+            document.getElementById('bar-n1').style.background = '#95E1D3';
+            document.getElementById('bar-n2').style.background = '#45B7D1';
+            document.getElementById('bar-n3').style.background = '#1A535C';
+
+            // Update percentage guide
+            let guide = '';
+            if (scenario.id.includes('toddler')) {
+                guide = '<strong>Toddler N3: ~30%</strong> - Massive deep sleep for brain development';
+            } else if (scenario.id.includes('young_adult_baseline')) {
+                guide = '<strong>Healthy Adult:</strong> N3 ~20%, REM ~20%, N2 ~50% - balanced architecture';
+            } else if (scenario.id.includes('alcohol')) {
+                guide = '<strong>Alcohol:</strong> N3 boosted early (~25%), lots of Wake late (~20%) - biphasic effect';
+            } else if (scenario.id.includes('sdb')) {
+                guide = '<strong>Severe Apnea:</strong> Wake ~40%, almost no N3 or REM - highly fragmented';
+            } else if (scenario.id.includes('jetlag')) {
+                guide = '<strong>Jet Lag:</strong> Shorter duration, N3 preserved but REM reduced';
+            } else if (scenario.id.includes('pregnancy')) {
+                guide = '<strong>Pregnancy T3:</strong> Frequent Wake (~20%), reduced N3 (~5%) and REM (~5%)';
+            } else if (scenario.id.includes('older')) {
+                guide = '<strong>Elderly:</strong> High Wake (~35%), almost no N3 (~0%), frequent arousals';
+            }
+
+            document.getElementById('percentage-guide').innerHTML = guide;
+        }
+
+        // Load first scenario by default
+        const firstBtn = buttonsContainer.querySelector('.scenario-btn');
+        if (firstBtn) {
+            loadScenario(hypnogramMockData.scenarios[0], firstBtn);
+        }
+    </script>
+</body>
+</html>
